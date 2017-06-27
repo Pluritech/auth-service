@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, Inject } from '@angular/core';
 
 import { Token } from './auth.token';
 import { AuthStatus } from './auth.status';
@@ -12,7 +12,8 @@ export class AuthService {
   private static AUTH_TOKEN = 'AUTH_TOKEN_KEY';
   private token: Token;
 
-  constructor() {
+  constructor(@Inject('keyToken') private keyToken :any) {
+    AuthService.AUTH_TOKEN = keyToken;  
   }
 
 /**

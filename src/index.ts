@@ -16,10 +16,10 @@ export * from './auth.token';
   ]
 })
 export class AuthServiceModule {
-  static forRoot(): ModuleWithProviders {
+  static forRoot(keyToken: string): ModuleWithProviders {
     return {
       ngModule: AuthServiceModule,
-      providers: [AuthService]
+      providers: [AuthService,  {provide: 'keyToken', useValue: keyToken}]
     };
   }
 }
