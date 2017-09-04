@@ -12,8 +12,8 @@ export class AuthService {
   private static AUTH_TOKEN = 'AUTH_TOKEN_KEY';
   private token: Token;
 
-  constructor(@Inject('keyToken') private keyToken :any) {
-    AuthService.AUTH_TOKEN = keyToken;  
+  constructor(@Inject('keyToken') private keyToken: any) {
+    AuthService.AUTH_TOKEN = keyToken;
   }
 
 /**
@@ -62,6 +62,7 @@ export class AuthService {
  * @param token     the current token to be saved on DB
  */
   public login(token: Token): Promise<Token> {
+    this.token = token;
     window.localStorage.setItem(AuthService.AUTH_TOKEN, JSON.stringify(token));
     return Promise.resolve(token);
   }
