@@ -3,13 +3,15 @@ import { Injectable, Inject } from '@angular/core';
 import { Token } from './auth.token';
 import { AuthStatus } from './auth.status';
 
+export const getKeyToken = (keyCustom: string) => keyCustom || AuthService.AUTH_TOKEN;
+
 /**
  * A service to store and control the token of authenticated user on pluritech applications
  */
 @Injectable()
 export class AuthService {
 
-  private static AUTH_TOKEN = 'AUTH_TOKEN_KEY';
+  public static AUTH_TOKEN = 'AUTH_TOKEN_KEY';
   private token: Token;
 
   constructor(@Inject('keyToken') private keyToken: any) {
@@ -32,11 +34,11 @@ export class AuthService {
  * Check the status of the current token
  * @param token     the status of the current token
  */
-  public isLogged(): Promise<AuthStatus> {
+  public isLogged(keyTokenCustom?: string): Promise<AuthStatus> {
     if (this.checkIsLogged()) {
       return Promise.resolve(AuthStatus.AUTHENTICATED);
     }
-    const stringifiedToken = window.localStorage.getItem(AuthService.AUTH_TOKEN);
+    const stringifiedToken = window.localStorage.getItem(getKeyToken(keyTokenCustom));
 
     return Promise.resolve(stringifiedToken).then(() => {
       if (stringifiedToken) {
@@ -61,9 +63,9 @@ export class AuthService {
  * Put the current authenticated token on DB and service
  * @param token     the current token to be saved on DB
  */
-  public login(token: Token): Promise<Token> {
+  public login(token: Token, keyTokenCustom?: string): Promise<Token> {
     this.token = token;
-    window.localStorage.setItem(AuthService.AUTH_TOKEN, JSON.stringify(token));
+    window.localStorage.setItem(getKeyToken(keyTokenCustom), JSON.stringify(token));
     return Promise.resolve(token);
   }
 
@@ -71,8 +73,8 @@ export class AuthService {
  * Removes the current authenticated token from the DB and the service
  * @returns     a promise from DB operation status
  */
-  public logout(): Promise<void> {
-    window.localStorage.removeItem(AuthService.AUTH_TOKEN);
+  public logout(keyTokenCustom?: string): Promise<void> {
+    window.localStorage.removeItem(getKeyToken(keyTokenCustom));
     delete this.token;
     return Promise.resolve();
   }
