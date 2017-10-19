@@ -25,7 +25,7 @@ import { NgModule } from '@angular/core';
 import { AppComponent } from './app.component';
 
 // Import your library
-import { AuthServiceModule } from 'auth-service';
+import { AuthServiceModule } from '@pluritech/auth-service';
 
 @NgModule({
   declarations: [
